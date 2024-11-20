@@ -14,6 +14,9 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Principal {
+    public Principal(LibroRepository repository){
+        this.repositorio=repository;
+    }
 
     private final String URL_BASE="https://gutendex.com/books?search=";
     int opcion;
@@ -74,7 +77,9 @@ public class Principal {
         DatosLibro datosApi=getDatosLibro();
 
         Libro libro=new Libro(datosApi);
+        repositorio.save(libro);
 
+        System.out.println(datosApi);
 
 
 

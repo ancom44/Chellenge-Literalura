@@ -2,8 +2,11 @@ package com.alura.literalura.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.nio.file.Files.size;
 
 @Entity
 @Table(name="libro")
@@ -22,19 +25,38 @@ public class Libro {
     public Libro(){};
     public Libro(DatosLibro datosApi) {
         this.titulo =  datosApi.titulo();
-        this.autor = datosApi.autores().stream()
-                .map(Autor::new)
-                .collect(Collectors.toList());
+        if(datosApi.autores().size()>0){
+            this.autor = datosApi.autores().stream()
+                    .map(Autor::new)
+                    .collect(Collectors.toList());
+        }
+        else{
+            autor.add(new Autor(null, null, null));
+        }
+
         try{
             this.idioma = datosApi.idiomas().stream()
                     .collect(Collectors.joining(", "));
         }catch (Exception e){
             System.out.println(e);
+            this.idioma=null;
+        }
+        if(datosApi.numeroDescargas()>0){
+            this.descargas = datosApi.numeroDescargas();
+        }
+        else{
+            this.descargas=0.0;
         }
 
-        this.descargas = descargas;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitulo() {
         return titulo;
@@ -49,6 +71,7 @@ public class Libro {
     }
 
     public void setAutor(List<Autor> autor) {
+        autor.forEach(e->e.setLibro(this));
         this.autor = autor;
     }
 

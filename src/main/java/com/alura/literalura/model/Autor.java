@@ -1,5 +1,6 @@
 package com.alura.literalura.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,7 @@ public class Autor {
     private Double anioDefunsion;
 
     @ManyToOne
+
     private Libro libro;
 
     public Autor() {
@@ -29,6 +31,8 @@ public class Autor {
         this.anioNacimiento = datosAutor.fechaDeNacimiento();
         this.anioDefunsion = datosAutor.fechaDeDefunsion();
     }
+
+
 
     public Long getId() {
         return id;
